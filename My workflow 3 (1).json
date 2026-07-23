@@ -1,0 +1,203 @@
+{
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Admissions",
+        "formDescription": "Fill the form to know about the course structure.\n",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Phone number",
+              "fieldType": "number",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Course",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Datascience"
+                  },
+                  {
+                    "option": "Python fullstack"
+                  },
+                  {
+                    "option": "Java fullstack"
+                  }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d98d333d-ed0c-4089-ba04-52e6fdc9bcb5",
+      "name": "On form submission",
+      "webhookId": "80842dd6-77d6-433c-8897-41c4aa20ec5f"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1dx9qZrvisg6lsx-p-6veByby1vrnbQigPJLf_tTxkM8",
+          "mode": "list",
+          "cachedResultName": "ADMISSIONS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dx9qZrvisg6lsx-p-6veByby1vrnbQigPJLf_tTxkM8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dx9qZrvisg6lsx-p-6veByby1vrnbQigPJLf_tTxkM8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.Name }}",
+            "Phone no.": "={{ $json['Phone number'] }}",
+            "Email": "={{ $json.Email }}",
+            "Course": "={{ $json.Course }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone no.",
+              "displayName": "Phone no.",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Course",
+              "displayName": "Course",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "f73dfd00-4e47-4891-a48e-b8a79359a5a8",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "MCtrDng5hRFm5CMJ",
+          "name": "Google Sheets account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "Greet",
+        "emailType": "text",
+        "message": "=Hi{{ $json.Name }}\nI am really appriciate you for your interest in \nIT Side.\nWe are always here to guid you\nIf you have any doubts feel free to reach out us.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "79f69ac4-4df4-4743-a689-d4caa3710c4e",
+      "name": "Send a message",
+      "webhookId": "4486a695-af2a-4830-89e6-34e65badf691",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "9X0UTbUc47Wsd4W5",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "ea064e7c-f0ae-4207-bf9c-9c2a17be051e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "fd7bd4b3ccfb5ba0d8eb7f81ecb512c60e07c32e5f979847102360eba070948e"
+  },
+  "nodeGroups": [],
+  "id": "2Ic9hb4XMhZgqOJh",
+  "tags": []
+}
